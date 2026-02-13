@@ -14,7 +14,7 @@
     <style>
         :root {
             --primary-color: #1a1a1a;
-            --accent-color: #FF2442;
+            --accent-color: #FF2442; /* 小红书红 */
             --bg-color: #F9F9F7;
             --text-color: #333;
             --light-gray: #e5e5e5;
@@ -28,6 +28,9 @@
             color: var(--text-color);
             line-height: 1.6;
             overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
         h1, h2, h3, .brand { font-family: 'Playfair Display', serif; }
@@ -81,7 +84,7 @@
 
         /* Hero */
         .hero {
-            height: 80vh; /* 稍微调低高度 */
+            height: 70vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -138,49 +141,47 @@
         }
         .stat-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: #888; }
 
-        /* --- 核心修改部分：Iframe 容器样式 --- */
-        .section {
-            padding: 4rem 5%;
+        /* Published Link Section (New) */
+        .archive-link-section {
+            padding: 6rem 5%;
+            text-align: center;
             background-color: #f4f4f4;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            flex-grow: 1; /* 推到底部 */
         }
-        
-        .section-title {
-            font-size: 2rem;
-            margin-bottom: 2rem;
-            text-align: center;
-        }
-
-        /* 专门为小红书 iframe 设计的容器 */
-        .iframe-container {
-            width: 100%;
-            max-width: 1200px; /* 限制最大宽度，防止在大屏太宽 */
-            height: 900px;     /* 固定高度，保证能展示足够内容 */
+        .archive-card {
             background: white;
-            border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-            overflow: hidden;
-            position: relative;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 3rem;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
         }
-
-        #doc-frame {
-            width: 100%;
-            height: 100%;
-            border: none;
-            display: block;
+        .archive-card:hover {
+            transform: translateY(-5px);
         }
-
-        /* 如果加载失败显示的替补文字 */
-        .iframe-fallback {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            z-index: -1; /* 放在iframe下面 */
+        .archive-card h2 {
+            margin-bottom: 1rem;
+            font-size: 2rem;
+        }
+        .archive-card p {
             color: #666;
+            margin-bottom: 2rem;
+        }
+        .xhs-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        .xhs-btn:hover {
+            background-color: #e01f3a;
         }
 
         /* Footer */
@@ -189,6 +190,7 @@
             color: white;
             padding: 3rem 5%;
             text-align: center;
+            margin-top: auto;
         }
         footer p { color: #888; font-size: 0.8rem; }
         footer .brand { color: white; display: block; margin-bottom: 1rem; }
@@ -196,7 +198,7 @@
         @media (max-width: 768px) {
             .hero h1 { font-size: 2.5rem; }
             .nav-links { display: none; }
-            .iframe-container { height: 600px; } /* 手机端高度调小 */
+            .stats-bar { gap: 2rem; }
         }
     </style>
 </head>
@@ -208,7 +210,7 @@
         <div class="nav-links">
             <a href="#">Journal Overview</a>
             <a href="#">Editorial Board</a>
-            <a href="https://www.xiaohongshu.com/user/profile/68f7625100000000370303d8" target="_blank">Featured Profile</a>
+            <!-- 删除了 Featured Profile 链接 -->
             <a href="https://mts-rubbish.github.io/mts/" target="_blank" class="btn-submit">Submit Manuscript</a>
         </div>
     </nav>
@@ -232,27 +234,16 @@
         </div>
     </div>
 
-    <!-- ⚠️ Iframe 区域 -->
-    <section class="section">
-        <h2 class="section-title">Editor's Featured Profile</h2>
-        
-        <!-- Iframe 容器 -->
-        <div class="iframe-container">
-            <!-- 替补文案：如果iframe加载不出来（见下方警告），用户会看到背景 -->
-            <div class="iframe-fallback">
-                <p>Unable to load Xiaohongshu directly?</p>
-                <a href="https://www.xiaohongshu.com/user/profile/68f7625100000000370303d8" target="_blank" style="color:#FF2442">Click here to open profile</a>
-            </div>
+    <!-- 删除了原有的 Iframe Section -->
 
-            <!-- 小红书 Iframe -->
-            <iframe 
-                id="doc-frame"
-                src="https://www.xiaohongshu.com/user/profile/68f7625100000000370303d8" 
-                allowfullscreen="true" 
-                webkitallowfullscreen="true" 
-                mozallowfullscreen="true"
-                referrerpolicy="no-referrer">
-            </iframe>
+    <!-- 新增：指向小红书主页的跳转卡片 -->
+    <section class="archive-link-section">
+        <div class="archive-card">
+            <h2>Published Archives</h2>
+            <p>Access our complete library of published works, trending topics, and editor's picks exclusively on our official Xiaohongshu channel.</p>
+            <a href="https://www.xiaohongshu.com/user/profile/68f7625100000000370303d8" target="_blank" class="xhs-btn">
+                View Published Journal (Xiaohongshu) &rarr;
+            </a>
         </div>
     </section>
 
